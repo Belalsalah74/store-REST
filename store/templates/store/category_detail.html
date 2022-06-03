@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+{% block title %}{{object.name}} products{% endblock title %}
+{% block content %}
+
+<ul>
+{% for product  in object.products.all  %}
+    
+    <a href="{{product.get_absolute_url}}"><li>{{product}}</li></a>
+
+</ul>
+<br>
+{% endfor %}
+<h1>Total {{object.total}}</h1>
+
+{% endblock content %}

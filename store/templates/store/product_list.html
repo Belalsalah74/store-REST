@@ -1,9 +1,7 @@
 {%extends 'base.html'%}
-{% block title %}products{% endblock title %}
+{% block title %}Products{% endblock title %}
 {% block content %}
 <h1>Products</h1>
-<a style="font-size:larger;float:right;margin-right: 60px;" href="#">Create an
-    product</a>
 
 <ul>
     {% for product in page_obj %}

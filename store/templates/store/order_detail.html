@@ -1,0 +1,18 @@
+{%extends 'base.html'%}
+{% block title %}Order {{object.id}}{% endblock title %}
+{% block content %}
+
+<p>{{object.placed_at}}</p>
+<ul>
+{% for item  in object.items.all  %}
+    
+
+<li>Product: {{item.product}}</li>
+<li>Quantity: {{item.quantity}}</li>
+<li>Price: {{item.product.price}}</li>
+</ul>
+<br>
+{% endfor %}
+<h1>Total {{object.total}}</h1>
+<p>Order status {{object.get_payment_status_display}}</p>
+{% endblock content %}

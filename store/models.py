@@ -13,6 +13,9 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("store:category-detail", kwargs={"pk": self.pk})
+    
 
 class Product(models.Model):
 
@@ -22,7 +25,7 @@ class Product(models.Model):
         max_digits=6, decimal_places=2, validators=[MinValueValidator(1)])
     inventory = models.PositiveSmallIntegerField(default=0)
     image = models.ImageField(null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT,null=True,blank=True,related_name='products')
     created = models.DateTimeField(auto_now_add=True, null=True)
     last_updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(blank=True, null=True)
@@ -90,6 +93,12 @@ class Customer(models.Model):
     def __str__(self):
         return f'{self.user.username}'
 
+class OrderManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
+    
+    def user_all(self):
+        pass
 
 class Order(models.Model):
 
@@ -110,10 +119,13 @@ class Order(models.Model):
     def __str__(self) -> str:
         return f'Order {self.pk}'
 
+    @property
+    def total(self):
+        return sum([item.total for item in self.items.all()])
 
 class OrderItem(models.Model):
 
-    Order = models.ForeignKey(
+    order = models.ForeignKey(
         Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='orderitems')
@@ -122,3 +134,7 @@ class OrderItem(models.Model):
 
     def __str__(self) -> str:
         return f'orderitem {self.id}-{self.product}'
+
+    @property
+    def total(self):
+        return self.item_price * Decimal(self.quantity)
