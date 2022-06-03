@@ -1,13 +1,17 @@
+from decimal import Decimal
 from uuid import uuid4
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.conf import settings
-
+from django.urls import reverse
 User = settings.AUTH_USER_MODEL
 
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Product(models.Model):
@@ -26,12 +30,25 @@ class Product(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("store:product-detail", kwargs={"pk": self.pk})
+    
 
 class Cart(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
+    def get_absolute_url(self):
+        return reverse('store:cart-detail', kwargs={"pk": self.pk})
+        
+
+    def total_price(self):
+        total = sum([item.total for item in self.items.all()])
+        return total
 
 class CartItem(models.Model):
 
@@ -47,6 +64,10 @@ class CartItem(models.Model):
     def __str__(self) -> str:
         return self.product.name
 
+    @property
+    def total(self):
+        return self.product.price * Decimal(self.quantity)
+        
 
 class Customer(models.Model):
 
@@ -62,7 +83,7 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
-    birth_date = models.DateField(null=True)
+    birth_date = models.DateField(null=True, blank=True)
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
 

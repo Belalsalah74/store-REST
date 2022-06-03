@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>{% block title %}
+        {% if title %}{{title}}
+       {% else %}Store{% endif %} {% endblock title %}</title>
+
+  
+
+    <link href="{% static 'base.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="navb">
+    <nav>
+    <a class="nave" href="{% url 'store:home' %}">Home</a>
+    <a class="nave" href="{% url 'store:product-list' %}">Products</a>
+     {% if cart_id %}
+        <a href="{% url 'store:cart-detail' cart_id %}">Go to cart</a>
+    {% endif %}
+    
+      {% if request.user.is_authenticated %}
+      {%endif%}
+      
+      {% if not request.user.is_authenticated %}
+      {%endif%}
+      
+      {% if request.user.is_staff%}
+      <a  class="nave" href="/admin/" target="_blank">Admin</a>
+      {%endif%}
+      
+    <br />
+    </nav>
+</div>
+
+    <!-- =================================================== -->
+
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+
+    <!-- =================================================== -->
+
+
+    {% block content%} {% endblock content%}
+</body>
+
+</html>

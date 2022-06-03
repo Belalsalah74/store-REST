@@ -1,0 +1,24 @@
+{%extends 'base.html'%}
+{% block title %}Craete article{% endblock title %}
+{% block content %}
+
+<p>{{object.created_at}}</p>
+
+{% for item  in object.items.all  %}
+    {{item.product}}
+    {{item.product.price}}
+    <br>
+{%empty%}
+<p>Cart is empty start shopping now</p>
+{% endfor %}
+<h1>Total {{object.total_price}}</h1>
+{% if request.user.is_authenticated %}
+
+
+    <form action="{% url 'store:order-create' %}", method="Post"> {%csrf_token%}
+        <input type="submit" value="Place order" >
+    </form>
+  
+{%endif%}
+
+{% endblock content %}
