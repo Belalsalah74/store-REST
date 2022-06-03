@@ -1,5 +1,5 @@
 {%extends 'base.html'%}
-{% block title %}Craete article{% endblock title %}
+{% block title %}Your cart{% endblock title %}
 {% block content %}
 
 <p>{{object.created_at}}</p>
@@ -13,13 +13,11 @@
 <p>Cart is empty start shopping now</p>
 {% endfor %}
 <h1>Total {{object.total_price}}</h1>
-{% if request.user.is_authenticated %}
 
 
-    <form action="#", method="Post"> {%csrf_token%}
+    <form  method="Post"> {%csrf_token%}
         <input type="submit" value="Place order" >
     </form>
   
-{%endif%}
 
 {% endblock content %}

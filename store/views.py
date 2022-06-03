@@ -2,9 +2,11 @@ from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.views import generic
-from .models import Product, Cart, CartItem, Order, OrderItem, Category, Customer
+from .models import Product, Cart, CartItem, Order, OrderItem, Category
 
 
 class ProductList(generic.ListView):
@@ -14,7 +16,6 @@ class ProductList(generic.ListView):
 
 class ProductDetail(generic.DetailView):
     model = Product
-    extra_context = {}
 
     # def get(self,request,*args, **kwargs):
     #     product = self.object = self.get_object()
@@ -50,17 +51,14 @@ class ProductDetail(generic.DetailView):
             return redirect(product)
 
 
-# class CartCreate(generic.CreateView):
-#     template_name = 'store/product_detail.html'
-#     model = Cart
-#     fields = []
-
 
 class CartDetail(generic.DetailView):
     model = Cart
     pk_url_kwarg = 'uuid'
 
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
+
         with transaction.atomic():
             cart = self.get_object()
             customer = request.user.customer
@@ -112,7 +110,3 @@ class ProductSearch(generic.ListView):
 
 class Index(generic.TemplateView):
     template_name = 'store/index.html'
-
-    def get(self, request, *args, **kwargs):
-
-        return super().get(request, *args, **kwargs)

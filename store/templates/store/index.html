@@ -2,7 +2,4 @@
 
 {% block content %}
 <h1>Welcome {% if user.is_authenticated %}{{user.username}}{% endif %}</h1>
-{% for item in request.session.items  %}
-    <p>{{item}}</p>
-{% endfor %}
 {% endblock content %}

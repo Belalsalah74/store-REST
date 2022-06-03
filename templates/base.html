@@ -26,10 +26,12 @@
     {% endif %}
     
       {% if request.user.is_authenticated %}
-      {%endif%}
-      
-      {% if not request.user.is_authenticated %}
-      {%endif%}
+        <a class="nave" href="{% url 'accounts:logout-confirm' %}">Logout</a>
+        {% else %}
+        
+        <a class="nave" href="{% url 'accounts:login' %}">Login</a>
+        <a class="nave" href="{% url 'accounts:signup' %}">Register</a>
+        {%endif%}
       
       {% if request.user.is_staff%}
       <a  class="nave" href="/admin/" target="_blank">Admin</a>
