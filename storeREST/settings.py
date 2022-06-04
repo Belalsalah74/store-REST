@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -33,15 +34,22 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'django_filters',
-    
+    'rest_framework_simplejwt',
+
 
 ]
 REST_FRAMEWORK = {
-
-    "PAGE_SIZE":2,
-    'COERCE_DECIMAL_TO_STRING':False,
+    "DEFAULT_AUTHENTICATION_CLASSES": ['rest_framework_simplejwt.authentication.JWTAuthentication'],
+    "PAGE_SIZE": 2,
+    'COERCE_DECIMAL_TO_STRING': False,
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
 }
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
