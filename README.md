@@ -1,10 +1,3 @@
 # Description
 
-Back end for online-store web app built with django
-
-# Features
-
-- Register,Login,Logout
-- View product list / product detail
-- Add product to cart for users & guests
-- Submit orders
+REST API for [online-store](https://github.com/Belalsalah74/online-store) built with django rest framework

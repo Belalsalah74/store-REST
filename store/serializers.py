@@ -87,16 +87,19 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             user = self.context['request'].user
             customer = user.customer
             cart_id = validated_data.pop('cart_id')
-            cart_items = Cart.objects.get(pk=cart_id).items.all()
+            cart = Cart.objects.get(pk=cart_id)
+            cart_items = cart.items.all()
             order = Order.objects.create(customer=customer)
             orderitems = [
-                OrderItem.objects.create(
+                OrderItem(
                     order=order,
                     product = item.product,
                     quantity=item.quantity,
                     item_price=item.product.price,
                 )for item in cart_items
             ]
+            OrderItem.objects.bulk_create(orderitems)
+            cart.delete()
             return order
 
 
