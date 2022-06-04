@@ -1,0 +1,14 @@
+{%extends 'base.html'%}
+{% block title %}Edit cart{% endblock title %}
+{% block content %}
+
+
+
+    <form  method="Post"> {%csrf_token%}
+        Product: {{object.product}}
+        <br>{{form}}
+        <input type="submit" value="Submit" >
+    </form>
+  
+
+{% endblock content %}

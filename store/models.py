@@ -46,7 +46,7 @@ class Cart(models.Model):
         ordering = ['-created_at']
 
     def get_absolute_url(self):
-        return reverse('store:cart-detail', kwargs={"pk": self.pk})
+        return reverse('store:cart-detail', kwargs={"uuid": self.pk})
         
 
     def total_price(self):
@@ -59,13 +59,17 @@ class CartItem(models.Model):
         Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='cartitems')
-    quantity = models.PositiveSmallIntegerField(default=1)
+    quantity = models.PositiveSmallIntegerField(default=1,validators=[MinValueValidator(1)])
 
     class Meta:
         unique_together = [['cart', 'product']]
 
     def __str__(self) -> str:
         return self.product.name
+
+    def get_absolute_url(self):
+        return reverse("store:cart-detail", kwargs={"uuid": self.cart.pk})
+    
 
     @property
     def total(self):

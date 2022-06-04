@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.views import generic
@@ -75,6 +76,18 @@ class CartDetail(generic.DetailView):
             messages.success(request, 'Order created successfully')
             return redirect('/')
 
+class CartItemUpdate(generic.UpdateView):
+    model = CartItem
+    fields = ['quantity']
+
+class CartItemDelete(generic.DeleteView):
+    model = CartItem
+    
+    def post(self,request,*args, **kwargs):
+        item = self.get_object()
+        cart = item.cart
+        item.delete()
+        return redirect(cart)
 
 class OrderDetail(LoginRequiredMixin, generic.DetailView):
     model = Order
