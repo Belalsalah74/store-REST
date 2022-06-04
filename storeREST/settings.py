@@ -32,10 +32,15 @@ INSTALLED_APPS = [
     'store',
     'accounts',
     'rest_framework',
+    'django_filters',
+    
+
 ]
 REST_FRAMEWORK = {
 
-    "PAGE_SIZE":2
+    "PAGE_SIZE":2,
+    'COERCE_DECIMAL_TO_STRING':False,
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
 }
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/login/'

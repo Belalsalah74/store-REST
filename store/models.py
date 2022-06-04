@@ -97,12 +97,12 @@ class Customer(models.Model):
     def __str__(self):
         return f'{self.user.username}'
 
-class OrderManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset()
+# class OrderManager(models.Manager):
+#     def get_queryset(self):
+#         return super().get_queryset()
     
-    def user_all(self):
-        pass
+#     def user_all(self):
+#         pass
 
 class Order(models.Model):
 
